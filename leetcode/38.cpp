@@ -1,60 +1,73 @@
-#include <iostream>
-#include <string>
-#include <vector>
-
-using namespace std;
+#include "leetcode.h"
 
 class Solution
 {
 public:
-	string read_continue_sequence(string &s)
+	string count(const string &s)
 	{
-		if (s.length() == 0) return "";
-
+		char current = 0;
 		int count = 0;
-		char ch = s[0];
-		while (count < s.length())
-		{
-			if (s[count] != ch)
-			{
-				break;
-			}
-			count++;
-		}
-		auto ret = string(2, ch);
-		ret[0] = count + '0';
-		s = s.substr(count);
-		return ret;
-	}
-
-	string convert_string(string &s)
-	{
 		string ret;
-		while (s.length() > 0)
+
+		for (auto c : s)
 		{
-			ret += read_continue_sequence(s);
+			if (current == c)
+			{
+				count++;
+			}
+			else
+			{
+				if (current != 0)
+				{
+					ret += (count + '0');
+					ret += current;
+				}
+
+				current = c;
+				count = 1;
+			}
 		}
+		ret += count + '0';
+		ret += current;
+
 		return ret;
 	}
 
     string countAndSay(int n)
 	{
-		if (n == 0) return "";
-
-		string ret = "1";
-		if (n == 1) return ret;
-
-		for (int i = 1; i < n; ++i)
+		if (n < answer.size())
 		{
-			ret = convert_string(ret);
-			cout << ret << endl;
+			return answer[n];
 		}
-		return ret;
-    }
+
+		while (answer.size() <= n)
+		{
+			answer.push_back(count(answer.back()));
+		}
+
+		return answer.back();
+	}
+
+private:
+	vector<string> answer = {"", "1"};
 };
 
 int main()
 {
 	Solution so;
-	cout << so.countAndSay(20) << endl;
+	cout << so.countAndSay(1) << endl;
+	cout << so.countAndSay(2) << endl;
+	cout << so.countAndSay(3) << endl;
+	cout << so.countAndSay(4) << endl;
+	cout << so.countAndSay(5) << endl;
+	cout << so.countAndSay(6) << endl;
+	cout << so.countAndSay(7) << endl;
+	cout << so.countAndSay(8) << endl;
+	cout << so.countAndSay(9) << endl;
+	cout << so.countAndSay(10) << endl;
+	cout << so.countAndSay(11) << endl;
+	cout << so.countAndSay(21) << endl;
+	cout << so.countAndSay(22) << endl;
+
+	return 0;
 }
